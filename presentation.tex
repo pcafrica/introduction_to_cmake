@@ -259,16 +259,15 @@ endif()
 \end{frame}
 
 \begin{frame}[fragile]{Debug}
-Variables are printed with
+Content of variables is printed with
 \begin{minted}{cmake}
 message("MY_VAR is: ${MY_VAR}")
 \end{minted}
 \vfill
-Commands are printed with
+Commands being executed are printed with
 \begin{minted}{bash}
 make VERBOSE=1
 \end{minted}
-for debug.
 \end{frame}
 
 \begin{frame}[focus]{}
