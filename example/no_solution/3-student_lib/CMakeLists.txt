@@ -11,7 +11,7 @@ set(LIB_VERSION "1.0" CACHE STRING "Library version to use.")
 # Generate shared library from source files.
 if(${LIB_VERSION} STREQUAL "1.0")
   # Generate library.
-  add_library(student SHARED src/Student_v1.cpp)
+  add_library(...)
 
   # Set library version.
   set_target_properties(... PROPERTIES VERSION 1.0)
