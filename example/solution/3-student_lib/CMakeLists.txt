@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(studentlib)
+project(StudentLib)
 
 # Enable optimizations.
 set(CMAKE_BUILD_TYPE Release)
