@@ -4,9 +4,10 @@ class Student
 {
 public:
   Student(const std::string &, const unsigned int &);
-  void display();
+  void
+  display();
 
 private:
-  std::string name;
+  std::string  name;
   unsigned int age;
 };

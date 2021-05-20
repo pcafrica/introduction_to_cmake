@@ -4,7 +4,8 @@ class Student
 {
 public:
   Student(const std::string &);
-  void display();
+  void
+  display();
 
 private:
   std::string name;

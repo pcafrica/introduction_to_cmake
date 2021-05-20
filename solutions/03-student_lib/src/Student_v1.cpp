@@ -6,7 +6,8 @@ Student::Student(const std::string &name)
   : name(name)
 {}
 
-void Student::display()
+void
+Student::display()
 {
   std::cout << "A student with name " << this->name << "." << std::endl;
 }
