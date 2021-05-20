@@ -6,7 +6,7 @@ project(Student)
 set(CMAKE_BUILD_TYPE Release)
 
 # Generate executable.
-add_executable(TestStudent test.cpp src/Student.cpp)
+add_executable(test_student test.cpp src/Student.cpp)
 
 # Include directory with header files.
-target_include_directories(TestStudent PUBLIC src)
+target_include_directories(test_student PUBLIC src)

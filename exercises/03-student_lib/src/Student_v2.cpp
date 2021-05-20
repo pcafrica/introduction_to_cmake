@@ -10,6 +10,6 @@ Student::Student(const std::string &name, const unsigned int &age)
 void
 Student::display()
 {
-  std::cout << "A student with name " << this->name << " and age " << this->age
-            << "." << std::endl;
+  std::cout << "My name is " << this->name << " and I am " << this->age
+            << " years old." << std::endl;
 }

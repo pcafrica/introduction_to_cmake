@@ -9,5 +9,5 @@ Student::Student(const std::string &name)
 void
 Student::display()
 {
-  std::cout << "A student with name " << this->name << "." << std::endl;
+  std::cout << "My name is " << this->name << "." << std::endl;
 }
