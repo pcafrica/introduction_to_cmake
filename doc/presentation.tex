@@ -12,7 +12,7 @@
 \setminted{bgcolor=main!10!background}
 \usemintedstyle{manni}
 
-\title{Introduction to \texorpdfstring{\\}{}(modern) CMake}
+\title{Introduction to \texttt{CMake}}
 \author{\texorpdfstring{\vspace{2\baselineskip}}{}
         Pasquale Africa}
 \institute{}
@@ -58,10 +58,29 @@
     \end{itemize}
 \end{frame}
 
+\begin{frame}[fragile]{Let's try}
+Unload the \texttt{mk} module system (\texttt{module purge}), then compile and install.\\
+\textbf{Doxygen} {\small (\url{https://github.com/doxygen/doxygen})}
+\begin{minted}{bash}
+cd /path/to/doxygen
+mkdir build && cd build
+cmake -DCMAKE_INSTALL_PREFIX=/opt/doxygen ../
+make -j<N>
+(sudo) make install
+\end{minted}
+\textbf{GNU Scientific Library} {\small (\url{https://www.gnu.org/software/gsl/})}
+\begin{minted}{bash}
+cd /path/to/gsl
+./configure --prefix=/opt/gsl --enable-shared --disable-static
+make -j<N>
+(sudo) make install
+\end{minted}
+\end{frame}
+
 \begin{frame}{Why CMake?}
 \begin{itemize}
     \item More packages use CMake than any other system
-    \item every IDE supports CMake (or vice-versa)
+    \item almost every IDE supports CMake (or vice-versa)
     \item really cross-platform, no better choices for Windows
     \item extensible, modular design
 \end{itemize}
@@ -95,23 +114,33 @@ Who else is using CMake?
 \end{frame}
 
 \section{CMake Basics}
-\begin{frame}[fragile]{Introduction to the basics}
+\begin{frame}[fragile]{CMake 101}
 The root of a project using CMake needs to contain a \textbf{\texttt{CMakeLists.txt}} file.
 
 \begin{minted}{cmake}
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.12)
 
 # This is a comment.
 project(MyProject VERSION 1.0
-                  DESCRIPTION "Very nice project"
+DESCRIPTION "A very nice project"
                   LANGUAGES CXX)
 \end{minted}
 Please use a CMake version more recent than your compiler (at least \(\geq 3.0\)).
 \vfill
-Command names are \textbf{case-insensitive}. Then:
+Command names are \textbf{case-insensitive}.
+\end{frame}
+
+\begin{frame}[fragile]{Introduction to the basics}
+Configure and compile with:
 \begin{minted}{bash}
 mkdir build && cd build
 cmake SOURCE_DIR
+make -j<N>
+\end{minted}
+To print a list of variable values:
+\begin{minted}{bash}
+cd build
+cmake SOURCE_DIR -L
 \end{minted}
 \end{frame}
 
@@ -166,7 +195,7 @@ Cache variables are used to communicate with the command line:
 # "VALUE" is just the default value.
 set(MY_CACHE_VARIABLE "VALUE" CACHE STRING "Description")
 
-# Boolean specialization:
+# Boolean specialization.
 option(MY_OPTION "This is settable from the command line" OFF)
 \end{minted}
 
@@ -208,7 +237,7 @@ message("PATH is set to: $ENV{PATH}")
 set(ENV{variable_name} value)
 \end{minted}
 
-(though it is generally a good idea to avoid them).
+(although it is generally a good idea to avoid them).
 \end{frame}
 
 \begin{frame}[fragile]{Control flow}
@@ -258,20 +287,39 @@ endif()
 \end{minted}
 \end{frame}
 
+\begin{frame}[fragile]{Modify files depending on variables}
+\texttt{print\_version.hpp.in}:
+\begin{minted}{c++}
+void print_version() {
+  std::cout << "Version number: " << @MY_PROJECT_VERSION@
+            << std::endl; }
+\end{minted}
+\texttt{CMakeLists.txt}:
+\begin{minted}{c++}
+set(MY_PROJECT_VERSION 1.2.0)
+
+configure_file(
+  "${CMAKE_CURRENT_SOURCE_DIR}/print_version.hpp.in"
+  "${CMAKE_CURRENT_BINARY_DIR}/print_version.hpp"
+)
+\end{minted}
+\end{frame}
+
 \begin{frame}[fragile]{Debug}
 Content of variables is printed with
 \begin{minted}{cmake}
 message("MY_VAR is: ${MY_VAR}")
 \end{minted}
 \vfill
+Error messages can be printed with
+\begin{minted}{cmake}
+message(FATAL_ERROR "MY_VAR has wrong value: ${MY_VAR}")
+\end{minted}
+\vfill
 Commands being executed are printed with
 \begin{minted}{bash}
 make VERBOSE=1
 \end{minted}
-\end{frame}
-
-\begin{frame}[focus]{}
-Let's try\dots
 \end{frame}
 
 \section{Advanced CMake}
@@ -320,7 +368,7 @@ try_compile(
         "-DINCLUDE_DIRECTORIES=${ZIP_INCLUDE_PATH}"
         "-DLINK_DIRECTORIES=${ZIP_LIB_PATH}")
 
-# See also
+# See also.
 try_run(...)
 \end{minted}
 \end{frame}
@@ -336,7 +384,7 @@ add_test(NAME MyTest COMMAND my_test_executable)
 
 \begin{frame}[fragile]{Organize a large project}
 \begin{minted}{cmake}
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.12)
 project(ExampleProject VERSION 1.0 LANGUAGES CXX)
 
 find_package(...)
@@ -347,7 +395,7 @@ add_subdirectory(tests)
 \end{minted}
 \end{frame}
 
-\section{How to structure a large project}
+\section{How to organize a large project}
 \begin{frame}[fragile, focus]
 \Large
 \begin{columns}[t]
@@ -370,7 +418,7 @@ add_subdirectory(tests)
 
   cmake/
     FindSomeLib.cmake
-  docs/
+  doc/
     Doxyfile.in
   scripts/
     do_something.sh
